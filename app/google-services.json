@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "226612399906",
+    "firebase_url": "https://surveillance-136a9.firebaseio.com",
+    "project_id": "surveillance-136a9",
+    "storage_bucket": "surveillance-136a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226612399906:android:7c46315023dd23c5",
+        "android_client_info": {
+          "package_name": "com.touristskaya.surveillance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226612399906-jm95lvf1urabh8vj6rrbuum4n1o7pcne.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.touristskaya.surveillance",
+            "certificate_hash": "6c5bcba5670dc5e751fdaff40cd54f341ea618f0"
+          }
+        },
+        {
+          "client_id": "226612399906-eub2c19q837sh9jcru2erb1hqudq4oqv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmUVHNMBPwiPPrLNJ1l7XRbUx0XY6rrq4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226612399906-eub2c19q837sh9jcru2erb1hqudq4oqv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
