@@ -1,5 +1,6 @@
 package com.touristskaya.surveillance;
 
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 
 import com.communication.surveillance.lib.communication.CommunicationMessage;
 import com.communication.surveillance.lib.communication.EmptyCommand;
+import com.communication.surveillance.lib.communication.MessagePayload;
+import com.communication.surveillance.lib.communication.PayloadType;
 import com.communication.surveillance.lib.communication.ServerInformationMessage;
 import com.communication.surveillance.lib.communication.SnapshotRequestCommand;
 import com.communication.surveillance.lib.communication.StartSurveillanceCommand;
@@ -15,6 +18,8 @@ import com.communication.surveillance.lib.communication.StopSurveillanceCommand;
 import com.communication.surveillance.lib.interfaces.CommunicationCommand;
 import com.communication.surveillance.lib.interfaces.Event;
 import com.communication.surveillance.lib.interfaces.EventListener;
+
+import java.util.ServiceConfigurationError;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,6 +61,40 @@ public class MainActivity extends AppCompatActivity {
                     return;
 
                 currentServerInformation = serverStatusChangedEvent.getEventData();
+                if (currentServerInformation == null)
+                    return;
+
+                if (currentServerInformation.getSurveillanceStatus() == ServerInformationMessage.SurveillanceStatus.ACTIVE)
+                    toggleObservationButton.setText("STOP");
+                else if (currentServerInformation.getSurveillanceStatus() == ServerInformationMessage.SurveillanceStatus.NOT_ACTIVE)
+                    toggleObservationButton.setText("START");
+            }
+        });
+
+        FirebaseManager.getInstance().addIncomingCommunicationMessageEventListener(new EventListener() {
+            @Override
+            public void eventFired(Event event) {
+                IncomingCommunicationMessageEvent incomingCommunicationMessageEvent = (IncomingCommunicationMessageEvent) event;
+                CommunicationMessage communicationMessage = incomingCommunicationMessageEvent.getEventData();
+
+                if (communicationMessage == null)
+                    return;
+                if (communicationMessage.getPayload() == null)
+                    return;
+
+                MessagePayload payload = communicationMessage.getPayload();
+                if (payload == null)
+                    return;
+
+                if (payload.getType() == PayloadType.IMAGE) {
+                    String imageData = payload.getPayloadData();
+                    Bitmap imageBitmap = SerializationHelper.bitmapFromString(imageData);
+
+                    imageView.setImageBitmap(imageBitmap);
+                }
+
+                CommunicationMessage emptyMessage = new CommunicationMessage();
+                FirebaseManager.getInstance().sendMessage(emptyMessage);
             }
         });
     }

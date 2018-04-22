@@ -48,6 +48,9 @@ public class FirebaseManager implements CommunicationManager {
                 if (message.getType() == CommunicationMessage.MessageType.REQUEST)
                     return;
 
+                System.out.println("COMMUNICATION_MESSAGE_ID: " + message.getId());
+                System.out.println("PAYLOAD_IS_EMPTY: " + (message.getPayload() == null));
+
                 incomingCommunicationMessageEvent.setEventData(message);
             }
 

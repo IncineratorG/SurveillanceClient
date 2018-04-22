@@ -95,6 +95,8 @@ public class SerializationHelper {
     }
 
     public static Bitmap bitmapFromString(String dataString) {
+        System.out.println("SerializationHelper->bitmapFromString()");
+
         byte[] imageByteArray = Base64.decode(dataString, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
     }
