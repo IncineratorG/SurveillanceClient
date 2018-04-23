@@ -68,6 +68,20 @@ public class MainActivity extends AppCompatActivity {
                     toggleObservationButton.setText("STOP");
                 else if (currentServerInformation.getSurveillanceStatus() == ServerInformationMessage.SurveillanceStatus.NOT_ACTIVE)
                     toggleObservationButton.setText("START");
+                else if (currentServerInformation.getSurveillanceStatus() == ServerInformationMessage.SurveillanceStatus.MOTION) {
+                    MessagePayload payload = currentServerInformation.getPayload();
+                    if (payload == null)
+                        return;
+
+                    if (payload.getType() == PayloadType.IMAGE) {
+                        String imageData = payload.getPayloadData();
+                        Bitmap imageBitmap = SerializationHelper.bitmapFromString(imageData);
+
+                        imageView.setImageBitmap(imageBitmap);
+                    }
+
+                    FirebaseManager.getInstance().clearServerStatusField();
+                }
             }
         });
 
@@ -121,7 +135,9 @@ public class MainActivity extends AppCompatActivity {
             return;
 
         CommunicationCommand command = null;
-        if (currentServerInformation.getSurveillanceStatus() == ServerInformationMessage.SurveillanceStatus.ACTIVE) {
+        if (currentServerInformation.getSurveillanceStatus() == ServerInformationMessage.SurveillanceStatus.ACTIVE ||
+                currentServerInformation.getSurveillanceStatus() == ServerInformationMessage.SurveillanceStatus.MOTION)
+        {
             command = new StopSurveillanceCommand();
         } else if (currentServerInformation.getSurveillanceStatus() == ServerInformationMessage.SurveillanceStatus.NOT_ACTIVE) {
             command = new StartSurveillanceCommand();

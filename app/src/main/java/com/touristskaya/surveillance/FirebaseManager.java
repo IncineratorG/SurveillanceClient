@@ -64,6 +64,8 @@ public class FirebaseManager implements CommunicationManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot == null || dataSnapshot.getValue() == null)
                     return;
+                if (dataSnapshot.getValue().toString().isEmpty())
+                    return;
 
                 ServerInformationMessage serverInformationMessage = SerializationHelper.serverInformationMessageFromString(
                                                                         dataSnapshot.getValue().toString()
@@ -104,6 +106,11 @@ public class FirebaseManager implements CommunicationManager {
     public void sendMessage(CommunicationMessage communicationMessage) {
         String dataString = SerializationHelper.communicationMessageToString(communicationMessage);
         firebaseReference.child("a").child("d").child(COMMUNICATION_MESSAGE_FIELD).setValue(dataString);
+    }
+
+
+    public void clearServerStatusField() {
+        firebaseReference.child("a").child("d").child(SERVER_STATUS_FIELD).setValue("");
     }
 
 
