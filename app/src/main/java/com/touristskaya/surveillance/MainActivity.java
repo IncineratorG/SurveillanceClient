@@ -1,5 +1,6 @@
 package com.touristskaya.surveillance;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -139,8 +140,14 @@ public class MainActivity extends AppCompatActivity {
                 currentServerInformation.getSurveillanceStatus() == ServerInformationMessage.SurveillanceStatus.MOTION)
         {
             command = new StopSurveillanceCommand();
+
+            Intent firebaseServiceIntent = new Intent(getBaseContext(), FirebaseService.class);
+            stopService(firebaseServiceIntent);
         } else if (currentServerInformation.getSurveillanceStatus() == ServerInformationMessage.SurveillanceStatus.NOT_ACTIVE) {
             command = new StartSurveillanceCommand();
+
+            Intent firebaseServiceIntent = new Intent(getBaseContext(), FirebaseService.class);
+            startService(firebaseServiceIntent);
         }
 
         CommunicationMessage communicationMessage = new CommunicationMessage();
